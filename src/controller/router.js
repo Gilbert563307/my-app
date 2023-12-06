@@ -15,8 +15,8 @@ const router = createBrowserRouter([
                 element: <BooksController/>,
                 children: [
                     {
-                        path: "/books/show",
-                        element: <CollectListBooks></CollectListBooks>
+                        path: "/books",
+                        element: <CollectListBooks/>
                     }
                    
                 ]

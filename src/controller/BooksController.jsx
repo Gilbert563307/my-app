@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useEffect, useReducer, useState } from 'react'
-import { Outlet, useNavigate } from "react-router-dom";
+import React, { createContext, useContext, useEffect, useReducer} from 'react'
+import { Outlet} from "react-router-dom";
 import { BooksLogic } from '../model/BooksLogic';
 
 const initialState = {
@@ -9,33 +9,27 @@ const initialState = {
 
 const BooksControllerState = createContext(initialState);
 export default function BooksController() {
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
     const BooksLogicInstance = BooksLogic();
 
-    const collectListBooks = async () => {
-        const books = await BooksLogicInstance.getAllBooks();
+    const collectListBooks = ()  => {
+        const books = BooksLogicInstance.getAllBooks();
+        console.log(`collectListBooks`, books)
         return books;
     }
 
-    const handleRequest = async (state, action) => {
-
+    const handleRequest = (state, action) => {
         switch (action.type) {
-            case "list":
-                const list = await collectListBooks();
-                console.log('>>',list.data);
-                return { ...state, books: list.data }
+            case "LISTBOOKS":
+                const list = collectListBooks();
+                return { ...state, books: list }
+
             default:
                 return state;
         }
     }
 
     const [state, dispatch] = useReducer(handleRequest, initialState);
-
-    useEffect(() => {
-        if (!state.action) {
-            navigate("/books/show");
-        }
-    }, [])
 
     return (
         <BooksControllerState.Provider value={{ state, dispatch }}>
